@@ -18,43 +18,30 @@ function getApiBaseUrl() {
   return window.parent.location.href
 }
 
+/**
+ * Sending ajax request in iframe would require a crumb in the request's header, this csrf strategy is default open in Jenkins. So we have to get the crumb's header name and token, which is rendered in the iframe tag by the JAVA class PluginUI.
+ */
+const headers = {};
+const crumbHeaderName = UrlConfig.getCrumbHeaderName();
+
+if (crumbHeaderName) {
+  headers[crumbHeaderName] = UrlConfig.getCrumbToken();
+}
 
 const AXIOS_DEFAULT_CONFIG = {
   baseURL: process.env.BASE_URL || getApiBaseUrl(),
   timeout: 20000,
   maxContentLength: 2000,
-  headers: {},
+  headers: headers,
   withCredentials: true, // 允许携带cookie
   paramsSerializer: stringifyQuery
 };
 
 axiosInstance = axios.create(AXIOS_DEFAULT_CONFIG);
 
-const crumbHeaderName = UrlConfig.getCrumbHeaderName();
-console.log(crumbHeaderName);
-console.log(UrlConfig.getCrumbToken());
-if (crumbHeaderName) {
-  axiosInstance.defaults.headers.common[crumbHeaderName] = UrlConfig.getCrumbToken();
-}
 
 export default axiosInstance;
 
-export const getExcludedDates = () => {
-  return axiosInstance.post("/list-excluded-dates");
+export const apiGetData = () => {
+  return axiosInstance.post("/data");
 };
-
-export const setExcludedDates = (params) => {
-  return axiosInstance.post("/set-excluded-dates", params);
-};
-
-export const getTimeRanges = () => {
-  return axiosInstance.post("/list-time-ranges");
-};
-
-export const setTimeRanges = (params) => {
-  return axiosInstance.post("/set-time-ranges", params);
-};
-
-export function fetchRegionalHolidays(regionCode) {
-  return axiosInstance.post(`/regions/${regionCode}`)
-}

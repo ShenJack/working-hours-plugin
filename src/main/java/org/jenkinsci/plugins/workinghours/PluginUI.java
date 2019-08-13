@@ -8,9 +8,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jenkinsci.plugins.workinghours.model.ExcludedDate;
-import org.jenkinsci.plugins.workinghours.model.TimeRange;
-import org.jenkinsci.plugins.workinghours.presets.PresetManager;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.json.JsonHttpResponse;
@@ -19,10 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkingHoursUI {
+public class PluginUI {
     private WorkingHoursPlugin config;
 
-    public WorkingHoursUI() {
+    public PluginUI() {
     }
 
     /**
@@ -68,9 +65,7 @@ public class WorkingHoursUI {
                 }
         }
 
-        // TODO: 30/5/2019 Implement or find a detailed error response Object
         throw new JsonHttpResponse(new JSONObject());
-
     }
 
     /**
@@ -78,7 +73,7 @@ public class WorkingHoursUI {
      *
      * @return {@link HttpResponse} Response with data.
      */
-    private HttpResponse getRegions() {
+    private HttpResponse getTodos() {
         return HttpResponses.okJSON(JSONArray.fromObject(PresetManager.getInstance().getRegions()));
     }
 
