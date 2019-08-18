@@ -66,7 +66,8 @@ public class WorkingHoursPluginTest {
     public void setUp() throws IOException {
         suppress(method(WorkingHoursPlugin.class, "load"));
         suppress(method(WorkingHoursPlugin.class, "save"));
-        PowerMockito.mockStatic(GlobalConfiguration.class);        
+        PowerMockito.mockStatic(GlobalConfiguration.class);
+        System.out.println("123");
     }
 
     @After
