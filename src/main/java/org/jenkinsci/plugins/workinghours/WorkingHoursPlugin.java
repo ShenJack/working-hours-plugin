@@ -44,8 +44,8 @@ import javax.annotation.Nonnull;
  *
  * @author jxpearce@godaddy.com
  */
-@Extension(optional = true)
-public class WorkingHoursPlugin extends GlobalConfiguration {
+@Extension
+public class WorkingHoursPlugin extends Descriptor<WorkingHoursPlugin> implements Describable<WorkingHoursPlugin> {
 
     /**
      * The list of valid times.
@@ -73,6 +73,7 @@ public class WorkingHoursPlugin extends GlobalConfiguration {
      * Default constructor - loads the configuration.
      */
     public WorkingHoursPlugin() {
+        super(self());
         load();
     }
 
@@ -82,22 +83,10 @@ public class WorkingHoursPlugin extends GlobalConfiguration {
      * @return list of included times.
      */
     public List<TimeRange> getBuildTimeMatrix() {
-        return this.buildTimeMatrix == null?
-                Collections.<TimeRange>emptyList()
-                : this.buildTimeMatrix;
+        return this.buildTimeMatrix == null ?
+            Collections.<TimeRange>emptyList()
+            : this.buildTimeMatrix;
     }
-
-    /**
-     * Hide it from the system configure page by returning "".
-     * @return "" empty string to hide it from the system configure page.
-     */
-    @Nonnull
-    @Override
-    public String getDisplayName() {
-        return "";
-    }
-
-
 
     /**
      * Sets the list of included times.
@@ -105,7 +94,7 @@ public class WorkingHoursPlugin extends GlobalConfiguration {
      * @param value the list of included times.
      */
     public void setBuildTimeMatrix(
-            @CheckForNull List<TimeRange> value) {
+        @CheckForNull List<TimeRange> value) {
         this.buildTimeMatrix = value;
         save();
     }
@@ -117,8 +106,8 @@ public class WorkingHoursPlugin extends GlobalConfiguration {
      */
     public List<ExcludedDate> getExcludedDates() {
         return this.excludedDates == null
-                ? Collections.<ExcludedDate>emptyList()
-                : this.excludedDates;
+            ? Collections.<ExcludedDate>emptyList()
+            : this.excludedDates;
     }
 
     /**
@@ -127,9 +116,13 @@ public class WorkingHoursPlugin extends GlobalConfiguration {
      * @param value the list of excluded dates.
      */
     public void setExcludedDates(
-            @CheckForNull List<ExcludedDate> value) {
+        @CheckForNull List<ExcludedDate> value) {
         this.excludedDates = value;
         save();
     }
 
+    @Override
+    public Descriptor<WorkingHoursPlugin> getDescriptor() {
+        return this;
+    }
 }
